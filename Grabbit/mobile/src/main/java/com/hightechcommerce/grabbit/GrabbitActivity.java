@@ -1,8 +1,8 @@
 package com.hightechcommerce.grabbit;
 
 import android.app.Activity;
-import android.app.PendingIntent;
-import android.content.Intent;
+import android.app.Notification;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -23,10 +23,11 @@ public class GrabbitActivity extends Activity {
 
     private class SalesforceRestClient {
 
-        private Activity m_parent;
+        public GrabbitActivity m_parent;
         private AsyncHttpClient m_client = new AsyncHttpClient();
 
-        public SalesforceRestClient(Activity parent) {
+
+        public SalesforceRestClient(GrabbitActivity parent) {
             m_parent = parent;
         }
 
@@ -51,34 +52,60 @@ public class GrabbitActivity extends Activity {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     // If the response is JSONObject instead of expected JSONArray
+
+                    Notification notification = new NotificationCompat.Builder(getApplication())
+                            .setSmallIcon(R.mipmap.ic_launcher)
+                            .setVibrate(new long[]{1000, 1000, 1000})
+                            .setContentTitle("Have fun with Grabbit!")
+                            .extend(
+                                    new NotificationCompat.WearableExtender()
+                                            .setHintShowBackgroundOnly(true)
+                                            .setHintScreenTimeout(WearableExtender.SCREEN_TIMEOUT_LONG)
+                                            .setBackground(BitmapFactory.decodeResource(getResources(), R.drawable.hintergrundlogo)))
+                            .build();
+
+                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplication());
+
+                    notificationManager.notify(notificationId, notification);
+                    notificationId += 1;
+
+
+                    try {
+                        m_parent.setToken(response.getString("access_token"));
+                    }
+                    catch (Exception e ) {
+                        Log.d("Exception:", e.getMessage());
+                    }
+
+                    submitTake(1);
                 }
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONArray timeline) {
                     // Pull out the first event on the public timeline
 
-                    Log.e("INFO:", "Connection established! 2");
+                    Log.d("INFO:", "Connection established! 2");
                 }
 
                 @Override
                 public void	onSuccess(int statusCode, org.apache.http.Header[] headers, java.lang.String responseString) {
-                    Log.e("INFO:", "Connection established! 3");
+                    Log.d("INFO:", "Connection established! 3");
                 }
 
 
                 @Override
                 public void	onFailure(int statusCode, org.apache.http.Header[] headers, java.lang.String responseString, java.lang.Throwable throwable) {
-                    Log.e("INFO:", "Connection failed! 1");
+                    Log.d("INFO:", "Connection failed! 1");
                 }
 
                 @Override
                 public void	onFailure(int statusCode, org.apache.http.Header[] headers, java.lang.Throwable throwable, org.json.JSONArray errorResponse) {
-                    Log.e("INFO:", "Connection failed! 2");
+                    Log.d("INFO:", "Connection failed! 2");
                 }
 
                 @Override
                 public void	onFailure(int statusCode, org.apache.http.Header[] headers, java.lang.Throwable throwable, org.json.JSONObject errorResponse) {
-                    Log.e("INFO:", "Statuscode: " + String.valueOf(statusCode) + " " + throwable.getMessage() + " " + errorResponse.toString());
+                    Log.d("INFO:", "Statuscode: " + String.valueOf(statusCode) + " " + throwable.getMessage() + " " + errorResponse.toString());
                 }
 
 
@@ -103,25 +130,84 @@ public class GrabbitActivity extends Activity {
 
         }
 
-
-
         public void submitTake(int product) {
+            String url = "https://eu5.salesforce.com/services/data/v34.0/query"; //Link tauschen
+            RequestParams params = new RequestParams();
+            params.put("q", "SELECT ID FROM Product2");
+            //Header[] // Authorizationen Bearer Access_Token
+            m_client.addHeader("Content-type", "application/json");
+            m_client.addHeader("Authorization", "Bearer " + m_access_token);
 
+            JsonHttpResponseHandler responseHandler = new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    // If the response is JSONObject instead of expected JSONArray
+                    Log.d("INFO:", response.toString());
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONArray timeline) {
+                    // Pull out the first event on the public timeline
+
+                    Log.d("INFO:", "Statuscode: " + String.valueOf(statusCode) + " " + timeline.toString());
+                }
+
+                @Override
+                public void	onSuccess(int statusCode, org.apache.http.Header[] headers, java.lang.String responseString) {
+                    Log.d("INFO:", "Connection established! 3");
+                }
+
+
+                @Override
+                public void	onFailure(int statusCode, org.apache.http.Header[] headers, java.lang.String responseString, java.lang.Throwable throwable) {
+                    Log.d("INFO:", "Statuscode: " + String.valueOf(statusCode) + " " + responseString.toString() + " " + throwable.toString());
+                }
+
+                @Override
+                public void	onFailure(int statusCode, org.apache.http.Header[] headers, java.lang.Throwable throwable, org.json.JSONArray errorResponse) {
+                    Log.d("INFO:", "Statuscode: " + String.valueOf(statusCode) + " " + errorResponse.toString() + " " + throwable.toString());
+                }
+
+                @Override
+                public void	onFailure(int statusCode, org.apache.http.Header[] headers, java.lang.Throwable throwable, org.json.JSONObject errorResponse) {
+                    Log.d("INFO:", "Statuscode: " + String.valueOf(statusCode) + " " + throwable.getMessage() + " " + errorResponse.toString());
+                }
+
+
+
+                @Override
+                public void onStart() {
+                    // called before request is started
+                }
+
+                /*@Override
+                public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
+                    System.out.println("Connection failed!");
+                }*/
+
+                @Override
+                public void onRetry(int retryNo) {
+                    // called when request is retried
+                }
+            };
+
+            get(url, params, responseHandler);
         }
 
 
     }
 
     SalesforceRestClient m_SalesforceModel;
+    public int notificationId;
+    public String m_access_token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grabbit);
 
+        notificationId = 1;
         m_SalesforceModel = new SalesforceRestClient(this);
-
-
     }
 
     @Override
@@ -149,4 +235,10 @@ public class GrabbitActivity extends Activity {
     public void connectToSalesforce(View v) {
         m_SalesforceModel.getAccessToken();
     }
+
+    public void setToken(String s) {
+        m_access_token = s;
+        Log.d("Token", m_access_token);
+    }
+
 }

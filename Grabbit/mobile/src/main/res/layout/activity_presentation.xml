@@ -1,0 +1,68 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".GrabbitActivity"
+    android:orientation="horizontal"
+    android:background="@drawable/background">
+
+    <LinearLayout
+        android:layout_height="500px"
+        android:layout_width="400px"
+        android:layout_marginTop="370px"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="60px"
+        android:paddingTop="50px"
+        android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".GrabbitActivity"
+        android:orientation="vertical">
+
+            />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="CR"
+            android:textSize="15pt"
+            android:fontFamily="sans-serif-light"
+            android:textAllCaps="false"
+            android:onClick="colaReject"
+            android:textColor="#FFFFFF"
+            android:background="#EE7A70"/>
+        <Button
+            android:layout_marginTop="30px"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="WR"
+            android:textSize="15pt"
+            android:fontFamily="sans-serif-light"
+            android:textAllCaps="false"
+            android:onClick="waterReject"
+            android:textColor="#FFFFFF"
+            android:background="#EE7A70"/>
+        <Button
+            android:layout_marginTop="30px"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="CA"
+            android:textSize="15pt"
+            android:fontFamily="sans-serif-light"
+            android:textAllCaps="false"
+            android:onClick="colaAccept"
+            android:textColor="#FFFFFF"
+            android:background="#EE7A70"/>
+        <Button
+            android:layout_marginTop="30px"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="AT"
+            android:textSize="15pt"
+            android:fontFamily="sans-serif-light"
+            android:textAllCaps="false"
+            android:onClick="ApfelAccept"
+            android:textColor="#FFFFFF"
+            android:background="#EE7A70"/>
+
+    </LinearLayout>
+
+</LinearLayout>
