@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".GrabbitActivity"
+    android:orientation="horizontal"
+    android:background="@drawable/background">
+
+    <LinearLayout
+        android:layout_height="500px"
+        android:layout_width="400px"
+        android:layout_marginTop="320px"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="60px"
+        android:paddingTop="50px"
+        android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".GrabbitActivity"
+        android:orientation="vertical">
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="100px"
+            android:hint="Login"
+            android:textColorHint="#EE7A70"
+            android:textColor="#FFFFFF"
+            android:background="@android:color/transparent"
+            />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="100px"
+            android:textColorHint="#EE7A70"
+            android:textColor="#FFFFFF"
+            android:hint="Password"
+            android:background="@android:color/transparent"
+            />
+
+        <Button
+            android:layout_marginTop="50px"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_send"
+            android:textSize="10pt"
+            android:fontFamily="sans-serif-light"
+            android:textAllCaps="false"
+            android:onClick="connectToSalesforce"
+            android:textColor="#FFFFFF"
+            android:background="#EE7A70"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="40px"
+            android:textSize="6pt"
+            android:text="Sign up for Grabbit"
+            android:layout_marginLeft="100px"
+            android:layout_marginTop="38px"
+            android:fontFamily="sans-serif-light"
+            android:textColor="#FFFFFF"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="40px"
+            android:textSize="6pt"
+            android:text="Need Help?"
+            android:layout_marginLeft="135px"
+            android:fontFamily="sans-serif-light"
+            android:textColor="#FFFFFF"/>
+    </LinearLayout>
+
+</LinearLayout>
